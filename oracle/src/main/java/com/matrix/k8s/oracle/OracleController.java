@@ -1,0 +1,44 @@
+/*
+ * Copyright (c) 2008-2021, Hazelcast, Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.matrix.k8s.oracle;
+
+import com.github.javafaker.Faker;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/oracle")
+@AllArgsConstructor
+public class OracleController {
+
+    private final Faker faker;
+
+    @GetMapping("/name")
+    public String name() {
+        return faker.funnyName().name();
+    }
+
+    @GetMapping("/prediction")
+    public Prediction prediction(@RequestHeader(name = "name", required = false) String name) {
+        if (name == null || name.isBlank()) {
+            return new Prediction("You're not ready yet, stranger!", 0);
+        }
+        return new Prediction(faker.princessBride().quote(), faker.number().numberBetween(0, 100));
+    }
+}
