@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: architect-{{ include "chart.name" . }}
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+    program: architect
+spec:
+  selector:
+    matchLabels:
+      {{- include "chart.selectorLabels" . | nindent 6 }}
+      program: architect
+  template:
+    metadata:
+      labels:
+        {{- include "chart.selectorLabels" . | nindent 8 }}
+        program: architect
+    spec:
+      containers:
+        - name: architect-{{ .Chart.Name }}
+          image: "{{ .Values.architect.image.repository }}:{{ .Values.architect.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.architect.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: MATRIX_NAMESPACE
+              valueFrom:
+              {{- if (empty .Values.architect.namespace) }}
+                fieldRef:
+                  fieldPath: metadata.namespace
+              {{- else}}
+              value: {{ .Values.architect.namespace }}
+              {{- end}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: architect-{{- include "chart.name" . }}
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.architect.service.type }}
+  ports:
+    - port: {{ .Values.architect.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    program: architect
+    {{- include "chart.selectorLabels" . | nindent 4 }}

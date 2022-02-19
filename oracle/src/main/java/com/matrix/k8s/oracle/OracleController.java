@@ -27,11 +27,17 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class OracleController {
 
+    private final Predictioner predictioner;
     private final Faker faker;
+
+    @GetMapping(value = "/health")
+    public String getHealth() {
+        return "Ok";
+    }
 
     @GetMapping("/name")
     public String name() {
-        return faker.funnyName().name();
+        return predictioner.name();
     }
 
     @GetMapping("/prediction")
@@ -39,6 +45,6 @@ public class OracleController {
         if (name == null || name.isBlank()) {
             return new Prediction("You're not ready yet, stranger!", 0);
         }
-        return new Prediction(faker.princessBride().quote(), faker.number().numberBetween(0, 100));
+        return new Prediction(predictioner.prediction(), faker.number().numberBetween(0, 100));
     }
 }

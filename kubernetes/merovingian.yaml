@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: architect
+  name: merovingian
   labels:
-    program: architect
+    program: merovingian
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        program: architect
+        program: merovingian
         application: matrix
     spec:
       serviceAccountName: architect-sa
       containers:
-        - name: architect
-          image: sbishyr/matrix-architect:0.1
+        - name: merovingian
+          image: sbishyr/matrix-merovingian:0.1
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -24,17 +24,19 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            - name: SERVICE_NAME
+              value: merovingian
   selector:
     matchLabels:
-      program: architect
+      program: merovingian
       application: matrix
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: architect-service
+  name: merovingian-service
   labels:
-    program: architect
+    program: merovingian
     application: matrix
 spec:
   type: NodePort
@@ -44,5 +46,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    program: architect
+    program: merovingian
     application: matrix

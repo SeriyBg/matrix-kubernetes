@@ -28,6 +28,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
@@ -35,6 +37,13 @@ import java.util.concurrent.atomic.AtomicReference;
 public class AgentController {
 
     private final AtomicReference<String> agent = new AtomicReference<>("default");
+    private final AtomicInteger health = new AtomicInteger(100);
+    private final Random random = new Random();
+
+    @GetMapping(value = "/health")
+    public String getHealth() {
+        return "Ok";
+    }
 
     @PostMapping(value = "/", consumes = MediaType.TEXT_PLAIN_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -42,7 +51,7 @@ public class AgentController {
         if (!"default".equals(agent.get())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Agent is already initialized.");
         }
-        InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("img/" + agentName.toLowerCase() + ".jpeg");
+        InputStream resourceAsStream = getInputStream(agentName);
         if (resourceAsStream == null) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Agent " + agentName + " is not a known agent name");
         }
@@ -51,11 +60,25 @@ public class AgentController {
 
     @GetMapping(value = "/", produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] getAgent() throws IOException {
-        InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("img/" + agent.get().toLowerCase() +
-                ".jpeg");
+        InputStream resourceAsStream = getInputStream(agent.get());
         if (resourceAsStream == null) {
             resourceAsStream = getClass().getClassLoader().getResourceAsStream("img/default.jpeg");
         }
         return Objects.requireNonNull(resourceAsStream).readAllBytes();
+    }
+
+    @GetMapping("/fight")
+    public FightHit fight() {
+        int hit = random.nextInt(30);
+        int agentHealth = health.accumulateAndGet(hit, (x, y) -> x - y);
+        if (agentHealth < 0) {
+            return new FightHit(0, 0, 0);
+        }
+        return new FightHit(hit/2, hit, agentHealth);
+    }
+
+    private InputStream getInputStream(String agent) {
+        return getClass().getClassLoader().getResourceAsStream("img/" + agent.toLowerCase() +
+                ".jpeg");
     }
 }

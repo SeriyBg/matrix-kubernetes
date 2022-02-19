@@ -1,11 +1,18 @@
+
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: agent
   labels:
+    application: matrix
     program: agent
 spec:
-  replicas: 1
+  replicas: 3
+  serviceName: agent
+  selector:
+    matchLabels:
+      program: agent
+      application: matrix
   template:
     metadata:
       labels:
@@ -13,18 +20,13 @@ spec:
         application: matrix
     spec:
       containers:
-        - name: agent
-          image: sbishyr/matrix-agent:0.1
+        - name: agent-matrix
+          image: "sbishyr/matrix-agent:0.1"
           imagePullPolicy: Always
           ports:
-            - containerPort: 8080
-          env:
-            - name: AGENT_NAME
-              value: Jones
-  selector:
-    matchLabels:
-      program: agent
-      application: matrix
+            - name: http
+              containerPort: 8080
+              protocol: TCP
 ---
 apiVersion: v1
 kind: Service

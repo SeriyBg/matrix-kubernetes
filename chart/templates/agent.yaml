@@ -1,0 +1,51 @@
+{{- if .Values.agent.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: agent-{{ include "chart.name" . }}
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+    program: agent
+spec:
+  replicas: {{ .Values.agent.replicaCount }}
+  serviceName: agent-{{- include "chart.name" . }}
+  selector:
+    matchLabels:
+      {{- include "chart.selectorLabels" . | nindent 6 }}
+      program: agent
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "chart.selectorLabels" . | nindent 8 }}
+        program: agent
+    spec:
+      containers:
+        - name: agent-{{ .Chart.Name }}
+          image: "{{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.agent.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agent-{{- include "chart.name" . }}
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.agent.service.type }}
+  ports:
+    - port: {{ .Values.agent.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    program: agent
+    {{- include "chart.selectorLabels" . | nindent 4 }}
+{{- end }}

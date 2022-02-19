@@ -6,6 +6,6 @@ COPY src /app/src
 RUN mvn clean install
 
 FROM openjdk:17.0.2
-COPY target/*-SNAPSHOT.jar /app/app.jar
+COPY --from=build /app/target/*-SNAPSHOT.jar /app/app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
