@@ -1,4 +1,24 @@
 {{- if .Values.oracle.enabled }}
+{{- if .Values.oracle.config }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oracle-cm
+  labels:
+    program: oracle
+    application: matrix
+data:
+  oracle-config.yaml: |-
+    names:
+    {{- range .Values.oracle.config.names }}
+      - {{ . | quote }}
+    {{- end }}
+    predictions:
+    {{- range .Values.oracle.config.predictions }}
+      - {{ . | quote }}
+    {{- end }}
+---
+{{- end }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,10 +41,24 @@ spec:
         - name: oracle-{{ .Chart.Name }}
           image: "{{ .Values.oracle.image.repository }}:{{ .Values.oracle.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.oracle.image.pullPolicy }}
+          {{- if .Values.oracle.config }}
+          env:
+            - name: EXTERNAL_CONFIGURATION
+              value: /data/config/oracle-config.yaml
+          volumeMounts:
+            - name: oracle-config
+              mountPath: /data/config
+          {{- end }}
           ports:
             - name: http
               containerPort: 8080
               protocol: TCP
+      {{- if .Values.oracle.config }}
+      volumes:
+        - name: oracle-config
+          configMap:
+            name: oracle-cm
+      {{- end }}
 ---
 apiVersion: v1
 kind: Service

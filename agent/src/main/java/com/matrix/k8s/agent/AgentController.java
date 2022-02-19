@@ -42,7 +42,7 @@ public class AgentController {
 
     @GetMapping(value = "/health")
     public String getHealth() {
-        return "Ok";
+        return String.valueOf(health.get());
     }
 
     @PostMapping(value = "/", consumes = MediaType.TEXT_PLAIN_VALUE)
