@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  matrix:
+  - apiVersion: v2
+    appVersion: "0.1"
+    created: "2022-02-20T17:23:26.421663+02:00"
+    description: A Helm chart for Matrix
+    digest: 04b4652254fc91b34a824fe352ddb003b4020dd8f457034706a116cad5fb1cfb
+    name: matrix
+    type: application
+    urls:
+    - https://seriybg.github.io/matrix-kubernetes/matrix-0.1.0.tgz
+    version: 0.1.0
+generated: "2022-02-20T17:23:26.420896+02:00"
