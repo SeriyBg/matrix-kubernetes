@@ -4,6 +4,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: oracle-cm
+  {{- if not (empty .Values.oracle.namespace) }}
+  namespace: {{ .Values.oracle.namespace }}
+  {{- end }}
   labels:
     program: oracle
     application: matrix
@@ -23,6 +26,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: oracle-{{ include "chart.name" . }}
+  {{- if not (empty .Values.oracle.namespace) }}
+  namespace: {{ .Values.oracle.namespace }}
+  {{- end }}
   labels:
     {{- include "chart.labels" . | nindent 4 }}
     program: oracle
@@ -63,7 +69,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: oracle-{{- include "chart.name" . }}
+  name: oracle
+  {{- if not (empty .Values.oracle.namespace) }}
+  namespace: {{ .Values.oracle.namespace }}
+  {{- end }}
   labels:
     {{- include "chart.labels" . | nindent 4 }}
 spec:

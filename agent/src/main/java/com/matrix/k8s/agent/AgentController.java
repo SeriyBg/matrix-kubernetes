@@ -33,7 +33,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
-@RequestMapping("/agent")
 public class AgentController {
 
     private final AtomicReference<String> agent = new AtomicReference<>("default");
@@ -41,8 +40,8 @@ public class AgentController {
     private final Random random = new Random();
 
     @GetMapping(value = "/health")
-    public String getHealth() {
-        return String.valueOf(health.get());
+    public Health getHealth() {
+        return new Health(agent.get(), health.get());
     }
 
     @PostMapping(value = "/", consumes = MediaType.TEXT_PLAIN_VALUE)

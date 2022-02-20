@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: merovingian-{{ include "chart.name" . }}
-  {{- if not (empty .Values.merovingian.namespace) }}
-  namespace: {{ .Values.merovingian.namespace }}
+  name: twins-{{ include "chart.name" . }}
+  {{- if not (empty .Values.twins.namespace) }}
+  namespace: {{ .Values.twins.namespace }}
   {{- end }}
   labels:
     {{- include "chart.labels" . | nindent 4 }}
-    program: merovingian
+    program: twins
 spec:
   selector:
     matchLabels:
       {{- include "chart.selectorLabels" . | nindent 6 }}
-      program: merovingian
+      program: twins
   template:
     metadata:
       labels:
         {{- include "chart.selectorLabels" . | nindent 8 }}
-        program: merovingian
+        program: twins
     spec:
       containers:
-        - name: merovingian-{{ .Chart.Name }}
-          image: "{{ .Values.merovingian.image.repository }}:{{ .Values.merovingian.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.merovingian.image.pullPolicy }}
+        - name: twins-{{ .Chart.Name }}
+          image: "{{ .Values.twins.image.repository }}:{{ .Values.twins.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.twins.image.pullPolicy }}
           ports:
             - name: http
               containerPort: 8080
@@ -31,19 +31,19 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: merovingian-{{- include "chart.name" . }}
-  {{- if not (empty .Values.merovingian.namespace) }}
-  namespace: {{ .Values.merovingian.namespace }}
+  name: twins
+  {{- if not (empty .Values.twins.namespace) }}
+  namespace: {{ .Values.twins.namespace }}
   {{- end }}
   labels:
     {{- include "chart.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.merovingian.service.type }}
+  type: {{ .Values.twins.service.type }}
   ports:
-    - port: {{ .Values.merovingian.service.port }}
+    - port: {{ .Values.twins.service.port }}
       targetPort: http
       protocol: TCP
       name: http
   selector:
-    program: merovingian
+    program: twins
     {{- include "chart.selectorLabels" . | nindent 4 }}

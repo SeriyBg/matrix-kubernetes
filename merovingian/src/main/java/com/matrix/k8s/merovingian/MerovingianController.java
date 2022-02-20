@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/merovingian")
 @RequiredArgsConstructor
 public class MerovingianController {
 

@@ -3,6 +3,9 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: agent-{{ include "chart.name" . }}
+  {{- if not (empty .Values.agent.namespace) }}
+  namespace: {{ .Values.agent.namespace }}
+  {{- end }}
   labels:
     {{- include "chart.labels" . | nindent 4 }}
     program: agent
@@ -35,7 +38,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: agent-{{- include "chart.name" . }}
+  name: agent
+  {{- if not (empty .Values.agent.namespace) }}
+  namespace: {{ .Values.agent.namespace }}
+  {{- end }}
   labels:
     {{- include "chart.labels" . | nindent 4 }}
 spec:

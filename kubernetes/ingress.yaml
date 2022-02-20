@@ -1,0 +1,55 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: fanout-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /agent(/|$)(.*)
+            backend:
+              serviceName: agent
+              servicePort: 8080
+          - path: /agent-smith(/|$)(.*)
+            backend:
+              serviceName: agent-smith
+              servicePort: 8080
+          - path: /agent-brown(/|$)(.*)
+            backend:
+              serviceName: agent-brown
+              servicePort: 8080
+          - path: /agent-jones(/|$)(.*)
+            backend:
+              serviceName: agent-jones
+              servicePort: 8080
+          - path: /agent-jackson(/|$)(.*)
+            backend:
+              serviceName: agent-jackson
+              servicePort: 8080
+          - path: /agent-johnson(/|$)(.*)
+            backend:
+              serviceName: agent-johnson
+              servicePort: 8080
+          - path: /agent-thompson(/|$)(.*)
+            backend:
+              serviceName: agent-thompson
+              servicePort: 8080
+          - path: /agent(/|$)(.*)
+            backend:
+              serviceName: agent
+              servicePort: 8080
+          - path: /oracle(/|$)(.*)
+            backend:
+              serviceName: oracle
+              servicePort: 8080
+          - path: /architect(/|$)(.*)
+            backend:
+              serviceName: architect
+              servicePort: 8080
+          - path: /merovingian(/|$)(.*)
+            backend:
+              serviceName: merovingian
+              servicePort: 8080

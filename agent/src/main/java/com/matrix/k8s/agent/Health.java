@@ -12,5 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */package com.matrix.k8s.agent;public class Health {
-}
+ */
+package com.matrix.k8s.agent;
+
+public record Health(String name, int health) {}

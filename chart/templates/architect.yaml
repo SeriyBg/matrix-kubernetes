@@ -2,6 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: architect-{{ include "chart.name" . }}
+  {{- if not (empty .Values.architect.namespace) }}
+  namespace: {{ .Values.architect.namespace }}
+  {{- end }}
   labels:
     {{- include "chart.labels" . | nindent 4 }}
     program: architect
@@ -16,6 +19,7 @@ spec:
         {{- include "chart.selectorLabels" . | nindent 8 }}
         program: architect
     spec:
+      serviceAccountName: architect-sa
       containers:
         - name: architect-{{ .Chart.Name }}
           image: "{{ .Values.architect.image.repository }}:{{ .Values.architect.image.tag | default .Chart.AppVersion }}"
@@ -37,7 +41,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: architect-{{- include "chart.name" . }}
+  name: architect
+  {{- if not (empty .Values.architect.namespace) }}
+  namespace: {{ .Values.architect.namespace }}
+  {{- end }}
   labels:
     {{- include "chart.labels" . | nindent 4 }}
 spec:

@@ -31,7 +31,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/architect")
 @RequiredArgsConstructor
 public class ArchitectController {
 
