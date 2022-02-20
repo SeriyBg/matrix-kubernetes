@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: merovingian-{{ include "chart.name" . }}
+  {{- if not (empty .Values.merovingian.namespace) }}
+  namespace: {{ .Values.merovingian.namespace }}
+  {{- end }}
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+    program: merovingian
+spec:
+  selector:
+    matchLabels:
+      {{- include "chart.selectorLabels" . | nindent 6 }}
+      program: merovingian
+  template:
+    metadata:
+      labels:
+        {{- include "chart.selectorLabels" . | nindent 8 }}
+        program: merovingian
+    spec:
+      containers:
+        - name: merovingian-{{ .Chart.Name }}
+          image: "{{ .Values.merovingian.image.repository }}:{{ .Values.merovingian.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.merovingian.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: merovingian-{{- include "chart.name" . }}
+  {{- if not (empty .Values.merovingian.namespace) }}
+  namespace: {{ .Values.merovingian.namespace }}
+  {{- end }}
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.merovingian.service.type }}
+  ports:
+    - port: {{ .Values.merovingian.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    program: merovingian
+    {{- include "chart.selectorLabels" . | nindent 4 }}
