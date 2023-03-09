@@ -43,6 +43,21 @@ public class AgentController {
         return new Health(agent.get(), health.get());
     }
 
+
+    @PostMapping(value = "/health", consumes = MediaType.TEXT_PLAIN_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public void setHealth(@RequestBody() String health) {
+        try {
+            int healthValue = Integer.parseInt(health);
+            if (healthValue <= 0) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Health must be greater than 0.");
+            }
+            this.health.set(healthValue);
+        } catch (NumberFormatException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Health must be number greater that 0.");
+        }
+    }
+
     @PostMapping(value = "/", consumes = MediaType.TEXT_PLAIN_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public void initAgent(@RequestBody() String agentName) {

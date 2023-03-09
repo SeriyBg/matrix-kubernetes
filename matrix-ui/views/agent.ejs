@@ -1,0 +1,15 @@
+<div>
+    <button id="back">Back to Architect</button>
+    <h2><%= title %> <%= agent %></h2>
+<!--    <img src="/images/architect.png" width="300" height="300">-->
+    <button id="fight">Fight</button>
+    <div></div>
+</div>
+<script>
+    (function() {
+        const backBtn = document.getElementById('back');
+        backBtn.addEventListener('click', function () {
+            $("#program-container").load("../architect/");
+        })
+    })()
+</script>

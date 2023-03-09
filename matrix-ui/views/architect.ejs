@@ -1,0 +1,14 @@
+<div>
+    <h2><%= title %></h2>
+    <img src="/images/architect.png" width="300" height="300">
+    <button id="architect-programs">Get all Matrix programs</button>
+    <div id="programs"></div>
+</div>
+<script>
+    (function (){
+        const btn = document.getElementById('architect-programs');
+        btn.addEventListener('click', function () {
+            $("#program-container").load("../agent/");
+        })
+    })()
+</script>
