@@ -5,7 +5,10 @@
 agent:
   enabled: true
   namespace: ""
-  replicaCount: 3
+  agents:
+    - "Smith"
+    - "Brown"
+    - "Jones"
   image:
     repository: sbishyr/matrix-agent
     pullPolicy: Always
