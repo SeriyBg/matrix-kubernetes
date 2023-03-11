@@ -9,7 +9,7 @@ agent:
   image:
     repository: sbishyr/matrix-agent
     pullPolicy: Always
-    tag: ""
+    tag: "0.3"
   service:
     type: ClusterIP
     port: 8080
@@ -21,7 +21,7 @@ oracle:
   image:
     repository: sbishyr/matrix-oracle
     pullPolicy: Always
-    tag: ""
+    tag: "0.1"
   service:
     type: ClusterIP
     port: 8080
@@ -71,7 +71,7 @@ architect:
   image:
     repository: sbishyr/matrix-architect
     pullPolicy: Always
-    tag: ""
+    tag: "0.1"
   service:
     type: ClusterIP
     port: 8080
@@ -82,7 +82,7 @@ merovingian:
   image:
     repository: sbishyr/matrix-merovingian
     pullPolicy: Always
-    tag: ""
+    tag: "0.1"
   service:
     type: ClusterIP
     port: 8080
@@ -93,7 +93,7 @@ twins:
   image:
     repository: sbishyr/matrix-twins
     pullPolicy: Always
-    tag: ""
+    tag: "0.1"
   service:
     type: ClusterIP
     port: 8080

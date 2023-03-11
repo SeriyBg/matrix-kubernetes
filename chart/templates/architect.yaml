@@ -1,3 +1,10 @@
+{{- if not(empty .Values.architect.namespace) }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.architect.namespace }}
+---
+{{- end }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -30,8 +37,8 @@ spec:
               protocol: TCP
           env:
             - name: MATRIX_NAMESPACE
-              valueFrom:
               {{- if (empty .Values.architect.namespace) }}
+              valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
               {{- else}}

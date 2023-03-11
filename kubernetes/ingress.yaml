@@ -1,55 +1,88 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: fanout-ingress
   annotations:
-    kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
+  ingressClassName: nginx
   rules:
     - http:
         paths:
           - path: /agent(/|$)(.*)
+            pathType: Prefix
             backend:
-              serviceName: agent
-              servicePort: 8080
+              service:
+                name: agent
+                port:
+                  number: 8080
           - path: /agent-smith(/|$)(.*)
+            pathType: Prefix
             backend:
-              serviceName: agent-smith
-              servicePort: 8080
+              service:
+                name: agent-smith
+                port:
+                  number: 8080
           - path: /agent-brown(/|$)(.*)
+            pathType: Prefix
             backend:
-              serviceName: agent-brown
-              servicePort: 8080
+              service:
+                name: agent-brown
+                port:
+                  number: 8080
           - path: /agent-jones(/|$)(.*)
+            pathType: Prefix
             backend:
-              serviceName: agent-jones
-              servicePort: 8080
+              service:
+                name: agent-jones
+                port:
+                  number: 8080
           - path: /agent-jackson(/|$)(.*)
+            pathType: Prefix
             backend:
-              serviceName: agent-jackson
-              servicePort: 8080
+              service:
+                name: agent-jackson
+                port:
+                  number: 8080
           - path: /agent-johnson(/|$)(.*)
+            pathType: Prefix
             backend:
-              serviceName: agent-johnson
-              servicePort: 8080
+              service:
+                name: agent-johnson
+                port:
+                  number: 8080
           - path: /agent-thompson(/|$)(.*)
+            pathType: Prefix
             backend:
-              serviceName: agent-thompson
-              servicePort: 8080
+              service:
+                name: agent-thompson
+                port:
+                  number: 8080
           - path: /agent(/|$)(.*)
+            pathType: Prefix
             backend:
-              serviceName: agent
-              servicePort: 8080
+              service:
+                name: agent
+                port:
+                  number: 8080
           - path: /oracle(/|$)(.*)
+            pathType: Prefix
             backend:
-              serviceName: oracle
-              servicePort: 8080
+              service:
+                name: oracle
+                port:
+                  number: 8080
           - path: /architect(/|$)(.*)
+            pathType: Prefix
             backend:
-              serviceName: architect
-              servicePort: 8080
+              service:
+                name: architect
+                port:
+                  number: 8080
           - path: /merovingian(/|$)(.*)
+            pathType: Prefix
             backend:
-              serviceName: merovingian
-              servicePort: 8080
+              service:
+                name: merovingian
+                port:
+                  number: 8080

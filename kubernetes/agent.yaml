@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: agent-matrix
-          image: "sbishyr/matrix-agent:0.1"
+          image: "sbishyr/matrix-agent:0.3"
           imagePullPolicy: Always
           ports:
             - name: http
