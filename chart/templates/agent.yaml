@@ -36,11 +36,11 @@ spec:
               protocol: TCP
 ---
 {{- $dot := . }}
-{{- range .Values.agent.agents }}
+{{- range $index, $agent := .Values.agent.agents }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: agent-{{ . | lower }}
+  name: agent-{{ $agent | lower }}
   {{- if not (empty $.Values.agent.namespace) }}
   namespace: {{ $.Values.agent.namespace }}
   {{- end }}
@@ -55,6 +55,7 @@ spec:
       name: http
   selector:
     program: agent
+    statefulset.kubernetes.io/pod-name: agent-{{ include "chart.name" $dot }}-{{$index}}
     {{- include "chart.selectorLabels" $dot | nindent 4 }}
 {{- end }}
 {{- end }}
