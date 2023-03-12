@@ -40,7 +40,6 @@ router.get('/fight/:name', function (req, res, next) {
   };
   request(requestOptions, (err, response, body) => {
     if (!err && response.statusCode === 200) {
-      console.log(JSON.parse(body))
       res.send("" + JSON.parse(body).agentHealth);
     }
   });
@@ -54,7 +53,7 @@ router.get('/fight/', function (req, res, next) {
   };
   request(requestOptions, (err, response, body) => {
     if (!err && response.statusCode === 200) {
-      res.send(JSON.parse(body).agentHealth);
+      res.send("" + JSON.parse(body).agentHealth);
     }
   });
 });
@@ -70,7 +69,7 @@ router.get('/agent/', function (req, res, next) {
     if (err) {
       res.render('error', err)
     } else if (response.statusCode === 200) {
-      res.render('agent', { title: 'Agent', agent: body.name, agentId: req.params.name, health: body.health });
+      res.render('agent', { title: 'Agent', agent: body.name, agentId: "default", health: body.health });
     } else {
       res.render('error', {})
     }
@@ -94,24 +93,10 @@ router.get('/agent/:name', function (req, res, next) {
   });
 });
 
-router.get('/agent/image/', async (req, res) => {
-  const requestOptions = {
-    url: apiOptions.server + "/agent/",
-    method: 'GET',
-    encoding: null
-  };
-  request(requestOptions,
-      (err, resp, buffer) => {
-        if (!err && resp.statusCode === 200){
-          res.set("Content-Type", "image/jpeg");
-          res.send(resp.body);
-        }
-      });
-});
-
 router.get('/agent/image/:name', async (req, res) => {
+  url = req.params.name === "default" ? "/agentk" : "/agent-" + req.params.name;
   const requestOptions = {
-    url: apiOptions.server + "/agent-" + req.params.name,
+    url: apiOptions.server + url,
     method: 'GET',
     encoding: null
   };
@@ -175,10 +160,8 @@ router.get('/merovingian/', function (req, res, next) {
   };
   request(requestOptions, (err, response, body) => {
     if (!err && response.statusCode === 200) {
-      console.log(body)
-      res.render('merovingian', { title: 'Merovingian', exiled: body });
+      res.render('merovingian', { title: 'Merovingian', exiled: JSON.parse(body) });
     }
-    console.log()
   });
 });
 
