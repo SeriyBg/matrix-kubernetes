@@ -2,7 +2,12 @@
     <button id="back">Back to Architect</button>
     <h2><%= title %> <%= agent %></h2>
 <!--    <img src="/images/architect.png" width="300" height="300">-->
+    <img src="/agent/image/<%= agentId %>" />
+    <input id="agentId" value="<%= agentId %>" type="hidden"/>
+    <div></div>
     <button id="fight">Fight</button>
+    <p>Health❤️️</p>
+    <p id="health"><%= health %></p>
     <div></div>
 </div>
 <script>
@@ -10,6 +15,17 @@
         const backBtn = document.getElementById('back');
         backBtn.addEventListener('click', function () {
             $("#program-container").load("../architect/");
+        })
+
+        const fightBtn = document.getElementById('fight');
+        fightBtn.addEventListener('click', function () {
+            id = document.getElementById('agentId');
+            $("#health").load("../fight/");
+            if (id.value) {
+                $("#health").load("../fight/" + id.value);
+            } else {
+                $("#health").load("../fight/");
+            }
         })
     })()
 </script>

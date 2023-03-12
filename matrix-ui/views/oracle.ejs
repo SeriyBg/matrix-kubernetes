@@ -1,8 +1,12 @@
 <div>
     <button id="back">Back to Architect</button>
     <h2><%= title %></h2>
-    <!--    <img src="/images/architect.png" width="300" height="300">-->
-    <button id="fight">Fight</button>
+    <img src="/images/oracle.png" width="300" height="300">
+    <div></div>
+    <button id="name">Find my name</button>
+    <div id="found-name"></div>
+    <button id="prediction">Prediction</button>
+    <div id="found-prediction"></div>
     <div></div>
 </div>
 <script>
@@ -10,6 +14,14 @@
         const backBtn = document.getElementById('back');
         backBtn.addEventListener('click', function () {
             $("#program-container").load("../architect/");
+        })
+        const nameBtn = document.getElementById('name');
+        nameBtn.addEventListener('click', function () {
+            $("#found-name").load("../oracle/name/");
+        })
+        const predictionBtn = document.getElementById('prediction');
+        predictionBtn.addEventListener('click', function () {
+            $("#found-prediction").load("../oracle/prediction/");
         })
     })()
 </script>

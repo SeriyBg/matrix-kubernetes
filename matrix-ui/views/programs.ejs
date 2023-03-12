@@ -1,0 +1,35 @@
+<div>
+    <button id="back">Back to Architect</button>
+    <h2><%= title %></h2>
+    <!--    <img src="/images/architect.png" width="300" height="300">-->
+    <ul>
+    <% for(var i=0; i < programs.length; i++) { %>
+        <li><button class="program" ><%= programs[i] %></button></li>
+    <% } %>
+    </ul>
+    <div></div>
+</div>
+<script>
+    (function() {
+        const backBtn = document.getElementById('back');
+        backBtn.addEventListener('click', function () {
+            $("#program-container").load("../architect/");
+        })
+        const prgmBtn = document.getElementsByClassName("program");
+        for (const prgmBtnElement of prgmBtn) {
+            prgmBtnElement.addEventListener('click', function () {
+                let prgm = this.innerText;
+                if (prgm.startsWith("agent")) {
+                    agParams = prgm.split("-");
+                    agentName = "";
+                    if (agParams.length > 1) {
+                        agentName = agParams[1];
+                    }
+                    $("#program-container").load("../" + agParams[0] + "/" + agentName);
+                } else {
+                    $("#program-container").load("../" + prgm + "/");
+                }
+            })
+        }
+    })()
+</script>

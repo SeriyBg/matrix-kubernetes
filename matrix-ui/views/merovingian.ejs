@@ -1,15 +1,19 @@
 <div>
     <button id="back">Back to Architect</button>
     <h2><%= title %></h2>
-    <!--    <img src="/images/architect.png" width="300" height="300">-->
-    <button id="fight">Fight</button>
+    <img src="/images/merovingian.png" width="300" height="300">
+    <ul>
+        <% for(var i=0; i < exiled.length; i++) { %>
+            <li><%= exiled[i] %></li>
+        <% } %>
+    </ul>
     <div></div>
 </div>
 <script>
     (function() {
         const backBtn = document.getElementById('back');
         backBtn.addEventListener('click', function () {
-            $("#program-container").load("../architect/");
+            $("#program-container").load("../merovingian/");
         })
     })()
 </script>
