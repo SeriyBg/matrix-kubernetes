@@ -6,7 +6,7 @@ const localStorage = new LocalStorage('./scratch');
 
 
 const apiOptions = {
-  server: 'http://35.195.174.247'
+  server: 'http://34.22.245.131'
 };
 
 
@@ -25,7 +25,7 @@ router.get('/all-programs/', function (req, res, next) {
     if (err) {
       res.render('error', err)
     } else if (response.statusCode === 200) {
-      res.render('programs', {title: 'All programs', programs: body})
+      res.render('all-programs', {title: 'All programs', programs: body})
     } else {
       res.render('error', {})
     }
@@ -69,7 +69,8 @@ router.get('/agent/', function (req, res, next) {
     if (err) {
       res.render('error', err)
     } else if (response.statusCode === 200) {
-      res.render('agent', { title: 'Agent', agent: body.name, agentId: "default", health: body.health });
+      let health = body.health < 0 ? 0 : body.health
+      res.render('agent', { title: 'Agent', agent: body.name, agentId: "default", health: health });
     } else {
       res.render('error', {})
     }
@@ -86,7 +87,8 @@ router.get('/agent/:name', function (req, res, next) {
     if (err) {
       res.render('error', err)
     } else if (response.statusCode === 200) {
-      res.render('agent', { title: 'Agent', agent: body.name, agentId: req.params.name, health: body.health });
+      let health = body.health < 0 ? 0 : body.health
+      res.render('agent', { title: 'Agent', agent: body.name, agentId: req.params.name, health: health });
     } else {
       res.render('error', {})
     }
@@ -94,7 +96,7 @@ router.get('/agent/:name', function (req, res, next) {
 });
 
 router.get('/agent/image/:name', async (req, res) => {
-  url = req.params.name === "default" ? "/agentk" : "/agent-" + req.params.name;
+  url = req.params.name === "default" ? "/agent" : "/agent-" + req.params.name;
   const requestOptions = {
     url: apiOptions.server + url,
     method: 'GET',
@@ -115,6 +117,10 @@ router.get('/architect/', function (req, res, next) {
 
 router.get('/oracle/', function (req, res, next) {
   res.render('oracle', { title: 'Oracle' });
+});
+
+router.get('/twins/', function (req, res, next) {
+  res.render('twins', { title: 'Twins' });
 });
 
 router.get('/oracle/name/', function (req, res, next) {

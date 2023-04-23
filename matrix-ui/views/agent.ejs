@@ -1,29 +1,22 @@
 <div>
-    <button id="back">Back to Architect</button>
-    <h2><%= title %> <%= agent %></h2>
-    <img src="/agent/image/<%= agentId %>" />
+<!--    <button id="back">Back to Architect</button>-->
+    <h2 class="agent-name"><%= title %> <%= agent %></h2>
+    <img src="/agent/image/<%= agentId %>" width="300" height="300"/>
     <input id="agentId" value="<%= agentId %>" type="hidden"/>
     <div></div>
-    <button id="fight">Fight</button>
+    <button id="fight-<%= agentId %>">Fight</button>
     <p>Health❤️️</p>
-    <p id="health"><%= health %></p>
-    <div></div>
+    <p id="health-<%= agentId %>"><%= health %></p>
 </div>
 <script>
     (function() {
-        const backBtn = document.getElementById('back');
-        backBtn.addEventListener('click', function () {
-            $("#program-container").load("../architect/");
-        })
-
-        const fightBtn = document.getElementById('fight');
+        let agId = "<%= agentId %>"
+        const fightBtn = document.getElementById('fight-' + agId);
         fightBtn.addEventListener('click', function () {
-            id = document.getElementById('agentId');
-            $("#health").load("../fight/");
-            if (id.value) {
-                $("#health").load("../fight/" + id.value);
+            if (agId !== "default") {
+                $("#health-" + agId).load("../fight/" + agId);
             } else {
-                $("#health").load("../fight/");
+                $("#health-" + agId).load("../fight/");
             }
         })
     })()

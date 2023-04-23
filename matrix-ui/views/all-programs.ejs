@@ -1,0 +1,26 @@
+<div>
+    <h2><%= title %></h2>
+    <div class="programs-container">
+    <% for(var i=0; i < programs.length; i++) { %>
+        <div id="<%= programs[i] %>" class="program-container" data-program="<%= programs[i] %>"></div>
+    <% } %>
+    </div>
+</div>
+<script>
+    (function() {
+        const prgmBtn = document.getElementsByClassName("program-container");
+        for (const prgmBtnElement of prgmBtn) {
+            let prgm = prgmBtnElement.dataset.program;
+            if (prgm.startsWith("agent")) {
+                let agParams = prgm.split("-");
+                var agentName = "";
+                if (agParams.length > 1) {
+                    agentName = agParams[1];
+                }
+                $('#' + prgmBtnElement.id).load("../" + agParams[0] + "/" + agentName);
+            } else {
+                $('#' + prgmBtnElement.id).load("../" + prgm + "/");
+            }
+        }
+    })()
+</script>

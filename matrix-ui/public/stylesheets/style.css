@@ -6,3 +6,19 @@ body {
 a {
   color: #00B7FF;
 }
+
+.programs-container {
+  display: flex;
+}
+
+.program-container {
+  margin: 2px;
+}
+
+#program-container {
+  margin-left: 5px;
+}
+
+.agent-name {
+  text-transform: capitalize;
+}
